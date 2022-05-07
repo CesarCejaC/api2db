@@ -1,7 +1,7 @@
 const express= require('express')
 const router = express.Router()
 const { getAll, getById, create, updateById, deleteById} = require('../controllers/ccrmcadu.controller')
-const {validatePostAndPut, validategetByIdAndDelete} = require('../../helpers/ccrmcaduValidator')
+const {validatePostAndPut, validategetByIdAndDelete} = require('../helpers/ccrmcaduValidator')
 
 router.get('/', getAll)
 

@@ -1,5 +1,5 @@
 const dbConn1 = require('../../config/ccrm.config')
-const {errorHandler, resHandler} = require('../../helpers/resHandler')
+const {errorHandler, resHandler} = require('../helpers/resHandler')
 
 const getAll =  async (req, res)=>{
     dbConn1.query("Select * from crm_cat_regimen_matrimonial", async (err, array) => {
