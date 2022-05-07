@@ -2,6 +2,16 @@ const dbConn = require('../../config/ccrmcadu.config')
 const {errorHandler, resHandler} = require('../helpers/resHandler')
 
 const getAll =  async (req, res)=>{
+    // dbConn.query("Select * from crm_cat_regimen_matrimonial", async (err, array) =>{
+    //     console.log(err)
+    //     console.log(array)
+    //     try{
+    //         res.send(resHandler('Registros encontrados', await array))
+    //     }catch(err){
+    //         res.send(errorHandler(err.sqlMessage, 'Registros no encontrados'))
+    //     }
+    // })
+
     dbConn.query("Select * from crm_cat_regimen_matrimonial", async (err, array) => {
         if(err){
             res.send(errorHandler(err.sqlMessage, 'Registros no encontrados'))
@@ -12,15 +22,24 @@ const getAll =  async (req, res)=>{
 }
 
 const getById =  async (req, res)=> {
-    dbConn.query("Select * from crm_cat_regimen_matrimonial where id = ? ", req.params.id, async (err, regimen) => {
-        if(err){
-            res.send(errorHandler(err.sqlMessage , 'Registro no encontrado'))
-        }else if (await regimen.length === 0) {
-            res.send(errorHandler('Invalid id' , 'Registro no encontrado'))
-        }else{
-            res.send(resHandler('Registro encontrado', await regimen))
-        }
+    dbConn.query("Select * from crm_cat_regimen_matrionial where id = ? ", req.params.id, async (err, regimen) => {
+            console.log('error: ',err)
+            console.log('array: ',regimen)
+            try{
+                res.send(resHandler('Registros encontrados', await regimen))
+            }catch(err){
+                res.send(errorHandler(err.sqlMessage, 'Registros no encontrados'))
+            }
     })
+    // dbConn.query("Select * from crm_cat_regimen_matrimonial where id = ? ", req.params.id, async (err, regimen) => {
+    //     if(err){
+    //         res.send(errorHandler(err.sqlMessage , 'Registro no encontrado'))
+    //     }else if (await regimen.length === 0) {
+    //         res.send(errorHandler('Invalid id' , 'Registro no encontrado'))
+    //     }else{
+    //         res.send(resHandler('Registro encontrado', await regimen))
+    //     }
+    // })
 }
 
 const create =  async (req, res)=>{
