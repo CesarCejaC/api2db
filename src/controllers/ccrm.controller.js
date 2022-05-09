@@ -4,10 +4,13 @@ const {errorHandler, resHandler} = require('../helpers/resHandler')
 const getAll =  async (req, res)=>{
     dbConn1.query("Select * from crm_cat_regimen_matrimonial", async (err, array) => {
         try{
-            if (err) throw `${err.sqlMessage}`
-            resHandler(res, 'Registros encontrados', 'ccrmcadu', await array)
+            if (err) {
+                console.log(err.sqlMessage)
+                throw err.code
+            }
+            resHandler(res, 'Registros encontrados', 'ccrm', await array)
         }catch(err){
-            errorHandler(res, err, 'Registros no encontrados', 'ccrmcadu')
+            errorHandler(res, err, 'Registros no encontrados', 'ccrm')
         }
     })
 }
@@ -15,11 +18,14 @@ const getAll =  async (req, res)=>{
 const getById =  async (req, res)=> {
     dbConn1.query("Select * from crm_cat_regimen_matrimonial where id = ? ", req.params.id, async (err, regimen) => {
         try{
-            if (err) throw `${err.sqlMessage}`
+            if (err) {
+                console.log(err.sqlMessage)
+                throw err.code
+            }
             if (await regimen.length === 0) throw 'Id invalido'
-            resHandler(res, 'Registro encontrado', 'ccrmcadu', await regimen)
+            resHandler(res, 'Registro encontrado', 'ccrm', await regimen)
         }catch(err){
-            errorHandler(res, err, 'Registro no encontrado', 'ccrmcadu')
+            errorHandler(res, err, 'Registro no encontrado', 'ccrm')
         }
     })
 }
@@ -27,10 +33,13 @@ const getById =  async (req, res)=> {
 const create =  async (req, res)=>{
     dbConn1.query("INSERT INTO crm_cat_regimen_matrimonial set ?", req.body, (err, a) => {
         try{
-            if (err) throw `${err.sqlMessage}`
-            resHandler(res, 'Registro creado', 'ccrmcadu', req.body)
+            if (err) {
+                console.log(err.sqlMessage)
+                throw err.code
+            }
+            resHandler(res, 'Registro creado', 'ccrm', req.body)
         }catch(err){
-            errorHandler(res, err.sqlMessage, 'Error al crear registro', 'ccrmcadu')
+            errorHandler(res, err, 'Error al crear registro', 'ccrm')
         }
     })
 }
@@ -38,13 +47,16 @@ const create =  async (req, res)=>{
 const updateById =  async (req, res)=>{
     dbConn1.query("Select * from crm_cat_regimen_matrimonial where id = ? ", req.params.id, async (err, regimen) => {
         try{
-            if (err) throw `${err.sqlMessage}`
+            if (err) {
+                console.log(err.sqlMessage)
+                throw err.code
+            }
             if (await regimen.length === 0) throw 'Id invalido'
             dbConn1.query("UPDATE crm_cat_regimen_matrimonial SET regimen_matrimonial=?,descripcion=?,id_usuario_alta=?,id_usuario_edicion=?,eliminado=? WHERE id = ?", [req.body.regimen_matrimonial, req.body.descripcion, req.body.id_usuario_alta, req.body.id_usuario_edicion, req.body.eliminado, req.params.id], () => {
-                resHandler(res, 'Registro actualizado', 'ccrmcadu', req.body,)
+                resHandler(res, 'Registro actualizado', 'ccrm', req.body,)
             })
         }catch(err){
-            errorHandler(res, err, 'Registro no actualizado', 'ccrmcadu')
+            errorHandler(res, err, 'Registro no actualizado', 'ccrm')
         }
     })
 }
@@ -52,13 +64,16 @@ const updateById =  async (req, res)=>{
 const deleteById =  async (req, res)=>{
     dbConn1.query("Select * from crm_cat_regimen_matrimonial where id = ? ", req.params.id, async (err, regimen) => {
         try{
-            if (err) throw `${err.sqlMessage}`
+            if (err) {
+                console.log(err.sqlMessage)
+                throw err.code
+            }
             if (await regimen.length === 0) throw 'Id invalido'
             dbConn1.query("UPDATE crm_cat_regimen_matrimonial SET eliminado= 1 WHERE id = ?", req.params.id, () => {
-                resHandler(res, 'Registro eliminado', 'ccrmcadu')
+                resHandler(res, 'Registro eliminado', 'ccrm')
             })
         }catch(err){
-            errorHandler(res, err, 'Registro no eliminado', 'ccrmcadu')
+            errorHandler(res, err, 'Registro no eliminado', 'ccrm')
         }
     })
 }

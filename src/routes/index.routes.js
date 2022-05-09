@@ -6,8 +6,8 @@ const ccrmRoutes = require('./ccrm.routes')
 //rutas a ccrmcadu
 indexRouter.use('/ccrmcadu', ccrmcaduRoutes)
 
+//rutas a ccrm
 indexRouter.use('/ccrm', ccrmRoutes)
-//rutas a otra base de datos
-//indexRouter.use('/otrabasededatos', require('./otrabasededatos.routes'))
+
 
 module.exports= indexRouter

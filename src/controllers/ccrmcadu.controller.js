@@ -4,7 +4,10 @@ const {errorHandler, resHandler} = require('../helpers/resHandler')
 const getAll =  async (req, res)=>{
     dbConn.query("Select * from crm_cat_regimen_matrimonial", async (err, array) => {
         try{
-            if (err) throw `${err.sqlMessage}`
+            if (err) {
+                console.log(err.sqlMessage)
+                throw err.code
+            }
             resHandler(res, 'Registros encontrados', 'ccrmcadu', await array)
         }catch(err){
             errorHandler(res, err, 'Registros no encontrados', 'ccrmcadu')
@@ -15,7 +18,10 @@ const getAll =  async (req, res)=>{
 const getById =  async (req, res)=> {
     dbConn.query("Select * from crm_cat_regimen_matrimonial where id = ? ", req.params.id, async (err, regimen) => {
         try{
-            if (err) throw `${err.sqlMessage}`
+            if (err){
+                console.log(err.sqlMessage)
+                throw err.code
+            }
             if (await regimen.length === 0) throw 'Id invalido'
             resHandler(res, 'Registro encontrado', 'ccrmcadu', await regimen)
         }catch(err){
@@ -27,10 +33,13 @@ const getById =  async (req, res)=> {
 const create =  async (req, res)=>{
     dbConn.query("INSERT INTO crm_cat_regimen_matrimonial set ?", req.body, (err, a) => {
         try{
-            if (err) throw `${err.sqlMessage}`
+            if (err){
+                console.log(err.sqlMessage)
+                throw err.code
+            }
             resHandler(res, 'Registro creado', 'ccrmcadu', req.body)
         }catch(err){
-            errorHandler(res, err.sqlMessage, 'Error al crear registro', 'ccrmcadu')
+            errorHandler(res, err, 'Error al crear registro', 'ccrmcadu')
         }
     })
 }
@@ -38,7 +47,10 @@ const create =  async (req, res)=>{
 const updateById =  async (req, res)=>{
     dbConn.query("Select * from crm_cat_regimen_matrimonial where id = ? ", req.params.id, async (err, regimen) => {
         try{
-            if (err) throw `${err.sqlMessage}`
+            if (err) {
+                console.log(err.sqlMessage)
+                throw err.code
+            }
             if (await regimen.length === 0) throw 'Id invalido'
             dbConn.query("UPDATE crm_cat_regimen_matrimonial SET regimen_matrimonial=?,descripcion=?,id_usuario_alta=?,id_usuario_edicion=?,eliminado=? WHERE id = ?", [req.body.regimen_matrimonial, req.body.descripcion, req.body.id_usuario_alta, req.body.id_usuario_edicion, req.body.eliminado, req.params.id], () => {
                 resHandler(res, 'Registro actualizado', 'ccrmcadu', req.body,)
@@ -52,7 +64,10 @@ const updateById =  async (req, res)=>{
 const deleteById =  async (req, res)=>{
         dbConn.query("Select * from crm_cat_regimen_matrimonial where id = ? ", req.params.id, async (err, regimen) => {
             try{
-                if (err) throw `${err.sqlMessage}`
+                if (err) {
+                    console.log(err.sqlMessage)
+                    throw err.code
+                }
                 if (await regimen.length === 0) throw 'Id invalido'
                 dbConn.query("UPDATE crm_cat_regimen_matrimonial SET eliminado= 1 WHERE id = ?", req.params.id, () => {
                     resHandler(res, 'Registro eliminado', 'ccrmcadu')
