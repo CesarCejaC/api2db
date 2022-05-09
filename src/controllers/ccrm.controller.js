@@ -3,10 +3,11 @@ const {errorHandler, resHandler} = require('../helpers/resHandler')
 
 const getAll =  async (req, res)=>{
     dbConn1.query("Select * from crm_cat_regimen_matrimonial", async (err, array) => {
-        if(err){
-            res.send(errorHandler(err.sqlMessage, 'Registros no encontrados'))
-        }else{
+        try{
+            if (err) throw `${err.sqlMessage}`
             res.send(resHandler('Registros encontrados', await array))
+        }catch(err){
+            res.send(errorHandler(err, 'Registros no encontrados'))
         }
     })
 }
