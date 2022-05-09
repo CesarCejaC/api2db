@@ -9,5 +9,12 @@ const resHandler = (res, msg, DB, data, code = 200 ) =>{
     res.status(code)
     res.send({'Status: ': code, 'message: ': msg, 'data: ': data})
 }
+const resCode = (err) => {
+    if (err){
+        console.log(err.sqlMessage)
+        throw err.code
+    }
+}
 
-module.exports = {errorHandler, resHandler}
+
+module.exports = {errorHandler, resHandler, resCode}
